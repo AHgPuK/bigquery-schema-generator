@@ -75,10 +75,10 @@ function mergeSchemas(original, generatedSchema) {
 function traverse(data, schema = {fields: []}) {
   if (Array.isArray(data)) {
     // We have to merge all the objects with the same keys, that forces us to create a hierarchy of types
-    return data.filter(dataItem => dataItem !== null).map(dataItem => traverse(dataItem)).reduce(mergeSchemas, schema);
+    return data.filter(dataItem => dataItem !== null).map(dataItem => traverse(dataItem, schema));
   } else {
     // We filter the fields with null value because we don't need them.
-    return {
+    let rowSchema = {
       fields: Object.keys(data)
         .filter(key => data[key] !== null && (!Array.isArray(data[key]) || (data[key].length > 0 && data[key].find(item => item !== null)) && (typeof data[key] !== 'string' || data[key] !== '')))
         .map(key => {
@@ -97,6 +97,7 @@ function traverse(data, schema = {fields: []}) {
           return meta
         })
     }
-  }
 
+    return mergeSchemas(schema, rowSchema);
+  }
 }
