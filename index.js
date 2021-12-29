@@ -1,7 +1,7 @@
 "use strict"
 
-module.exports = function generate(data) {
-  return traverse(data)
+module.exports = function generate(data, schema) {
+  return traverse(data, schema)
 }
 
 
@@ -72,10 +72,10 @@ function mergeSchemas(original, generatedSchema) {
   return original;
 }
 
-function traverse(data) {
+function traverse(data, schema = {fields: []}) {
   if (Array.isArray(data)) {
     // We have to merge all the objects with the same keys, that forces us to create a hierarchy of types
-    return data.filter(dataItem => dataItem !== null).map(dataItem => traverse(dataItem)).reduce(mergeSchemas, {fields: []});
+    return data.filter(dataItem => dataItem !== null).map(dataItem => traverse(dataItem)).reduce(mergeSchemas, schema);
   } else {
     // We filter the fields with null value because we don't need them.
     return {
