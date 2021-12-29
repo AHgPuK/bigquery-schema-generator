@@ -32,9 +32,10 @@ function typeHierarchyReducer(accumulator, currentValue) {
 }
 
 function getType(val) {
-  if (typeof val === 'boolean' || (typeof val === 'string' && ["true", "false", "t", "f", "yes", "no", "y", "n"].includes(val.toLowerCase()))) return "BOOLEAN"
-  if (!isNaN(val)) {
-    if (Number.isInteger(parseFloat(val))) return "INTEGER"
+//  if (typeof val === 'boolean' || (typeof val === 'string' && ["true", "false", "t", "f", "yes", "no", "y", "n"].includes(val.toLowerCase()))) return "BOOLEAN"
+  if (typeof val === 'boolean') return "BOOLEAN"
+  if ((val)?.constructor == Number) {
+    if (Number.isInteger(val)) return "INTEGER"
     return "FLOAT"
   }
   if (val instanceof Date) return "TIMESTAMP"
