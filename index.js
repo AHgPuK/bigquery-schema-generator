@@ -75,7 +75,8 @@ function mergeSchemas(original, generatedSchema) {
 function traverse(data, schema = {fields: []}) {
   if (Array.isArray(data)) {
     // We have to merge all the objects with the same keys, that forces us to create a hierarchy of types
-    return data.filter(dataItem => dataItem !== null).map(dataItem => traverse(dataItem, schema));
+    data.filter(dataItem => dataItem !== null).map(dataItem => traverse(dataItem, schema));
+    return schema;
   } else {
     // We filter the fields with null value because we don't need them.
     let rowSchema = {
